@@ -1,0 +1,5 @@
+model Waybill {
+  id          String   @id @default(uuid())
+  number      String
+  createdAt  DateTime @default(now())
+}

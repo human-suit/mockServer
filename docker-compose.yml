@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: etran_postgres
+    environment:
+      POSTGRES_USER: etran
+      POSTGRES_PASSWORD: etran
+      POSTGRES_DB: etran_mock
+    ports:
+      - "5432:5432"
