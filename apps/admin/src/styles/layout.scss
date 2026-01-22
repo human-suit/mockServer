@@ -1,0 +1,34 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  width: 100vw;
+
+  .sidebar {
+    width: 200px;
+    padding: 16px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .content {
+    margin-left: 200px;
+    padding: 32px;
+    flex: 1;
+    background-color: #f3f4f6;
+
+    display: flex;
+    justify-content: center; /* центрируем по горизонтали */
+    align-items: flex-start; /* сверху */
+  }
+
+  /* Для таблицы можно добавить класс, например .table-wrapper */
+  .table-wrapper {
+    width: 100%;
+    max-width: 1000px; /* ограничиваем максимальную ширину таблицы */
+  }
+}

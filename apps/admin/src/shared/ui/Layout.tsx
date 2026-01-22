@@ -1,13 +1,14 @@
 import { Outlet, NavLink } from "react-router-dom";
+import "../../styles/layout.scss";
 
 const Layout = () => {
   return (
-    <div style={{ display: "flex" }}>
-      <aside style={{ width: 200 }}>
+    <div className="layout">
+      <aside className="sidebar">
         <NavLink to="/waybills">Waybills</NavLink>
       </aside>
 
-      <main style={{ padding: 16, flex: 1 }}>
+      <main className="content">
         <Outlet />
       </main>
     </div>

@@ -2,7 +2,7 @@ import WaybillTable from "@entities/waybill/ui/WaybillTable";
 
 const WaybillsPage = () => {
   return (
-    <div>
+    <div className="table-wrapper">
       <WaybillTable />
     </div>
   );

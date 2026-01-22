@@ -1,44 +1,54 @@
+// @shared/api/mockWaybills.ts
+export type WaybillStatus = "draft" | "active" | "closed";
+
 export interface Waybill {
   id: number;
   number: string;
   date: string;
   sender: string;
   receiver: string;
+  status: WaybillStatus;
 }
 
-let waybills: Waybill[] = [
-  {
-    id: 1,
-    number: "WB-001",
-    date: "2026-01-21",
-    sender: "АО РЖД",
-    receiver: "ООО Логистик",
-  },
-  {
-    id: 2,
-    number: "WB-002",
-    date: "2026-01-22",
-    sender: "АО РЖД",
-    receiver: "ООО Транс",
-  },
-];
+const API_BASE = "http://localhost:3000";
 
-export const getWaybills = async () => {
-  return [...waybills];
+// --- Получить все накладные ---
+export const getWaybills = async (): Promise<Waybill[]> => {
+  const res = await fetch(`${API_BASE}/waybills`);
+  if (!res.ok) throw new Error("Failed to fetch waybills");
+  return res.json();
 };
 
-export const createWaybill = async (wb: Omit<Waybill, "id">) => {
-  const newWaybill = { ...wb, id: waybills.length + 1 };
-  waybills.push(newWaybill);
-  return newWaybill;
+// --- Создать накладную ---
+export const createWaybill = async (
+  wb: Omit<Waybill, "id">,
+): Promise<Waybill> => {
+  const res = await fetch(`${API_BASE}/waybills`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(wb),
+  });
+  if (!res.ok) throw new Error("Failed to create waybill");
+  return res.json();
 };
 
-export const updateWaybill = async (id: number, wb: Partial<Waybill>) => {
-  waybills = waybills.map((w) => (w.id === id ? { ...w, ...wb } : w));
-  return waybills.find((w) => w.id === id);
+// --- Обновить накладную ---
+export const updateWaybill = async (
+  id: number,
+  wb: Partial<Omit<Waybill, "id">>,
+): Promise<Waybill> => {
+  const res = await fetch(`${API_BASE}/waybills/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(wb),
+  });
+  if (!res.ok) throw new Error("Failed to update waybill");
+  return res.json();
 };
 
-export const deleteWaybill = async (id: number) => {
-  waybills = waybills.filter((w) => w.id !== id);
-  return true;
+// --- Удалить накладную ---
+export const deleteWaybill = async (id: number): Promise<void> => {
+  const res = await fetch(`${API_BASE}/waybills/${id}`, { method: "DELETE" });
+  if (!res.ok && res.status !== 204)
+    throw new Error("Failed to delete waybill");
 };

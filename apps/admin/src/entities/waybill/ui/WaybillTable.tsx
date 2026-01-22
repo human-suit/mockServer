@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Waybill } from "../model/types";
-import { waybillApi } from "../model/Waybill.store";
+import { useState, useEffect } from "react";
+import { Waybill, getWaybills } from "@shared/api/mockWaybills";
 import WaybillCreateModal from "./WaybillCreateModal";
 import WaybillEditModal from "./WaybillEditModal";
 import WaybillDeleteModal from "./WaybillDeleteModal";
@@ -11,10 +10,16 @@ const WaybillTable = () => {
   const [editItem, setEditItem] = useState<Waybill | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
-  const load = () => waybillApi.getAll().then(setData);
+  const load = async () => {
+    const wb = await getWaybills();
+    setData(wb);
+  };
 
   useEffect(() => {
-    load();
+    const fetchData = async () => {
+      await load();
+    };
+    void fetchData();
   }, []);
 
   return (
@@ -22,10 +27,21 @@ const WaybillTable = () => {
       <button onClick={() => setCreateOpen(true)}>Create</button>
 
       <table>
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody>
           {data.map((w) => (
             <tr key={w.id}>
               <td>{w.number}</td>
+              <td>{w.sender}</td>
+              <td>{w.receiver}</td>
               <td>{w.status}</td>
               <td>
                 <button onClick={() => setEditItem(w)}>Edit</button>
@@ -42,7 +58,6 @@ const WaybillTable = () => {
           onCreated={load}
         />
       )}
-
       {editItem && (
         <WaybillEditModal
           waybill={editItem}
@@ -50,8 +65,7 @@ const WaybillTable = () => {
           onUpdated={load}
         />
       )}
-
-      {deleteId && (
+      {deleteId !== null && (
         <WaybillDeleteModal
           id={deleteId}
           onClose={() => setDeleteId(null)}

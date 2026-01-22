@@ -1,15 +1,15 @@
-import { waybillApi } from "../model/Waybill.store";
+import { deleteWaybill } from "@shared/api/mockWaybills";
 
 interface Props {
   id: number;
   onClose: () => void;
-  onDeleted: () => void;
+  onDeleted: () => Promise<void>;
 }
 
 const WaybillDeleteModal = ({ id, onClose, onDeleted }: Props) => {
   const handleDelete = async () => {
-    await waybillApi.delete(id);
-    onDeleted();
+    await deleteWaybill(id);
+    await onDeleted();
     onClose();
   };
 
@@ -17,7 +17,6 @@ const WaybillDeleteModal = ({ id, onClose, onDeleted }: Props) => {
     <div className="modal">
       <h3>Delete Waybill</h3>
       <p>Are you sure?</p>
-
       <button onClick={handleDelete}>Yes, delete</button>
       <button onClick={onClose}>Cancel</button>
     </div>

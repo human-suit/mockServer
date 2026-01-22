@@ -1,36 +1,55 @@
 import { useState } from "react";
-import { waybillApi } from "../model/Waybill.store";
+import { createWaybill, WaybillStatus } from "@shared/api/mockWaybills";
 
 interface Props {
   onClose: () => void;
-  onCreated: () => void;
+  onCreated: () => Promise<void>;
 }
 
 const WaybillCreateModal = ({ onClose, onCreated }: Props) => {
   const [number, setNumber] = useState("");
+  const [sender, setSender] = useState("");
+  const [receiver, setReceiver] = useState("");
+  const [status, setStatus] = useState<WaybillStatus>("draft");
 
   const handleCreate = async () => {
-    await waybillApi.create({
+    await createWaybill({
       number,
-      status: "draft",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      sender,
+      receiver,
+      status,
+      date: new Date().toISOString().split("T")[0],
     });
-
-    onCreated();
+    await onCreated();
     onClose();
   };
 
   return (
     <div className="modal">
       <h3>Create Waybill</h3>
-
       <input
-        placeholder="Waybill number"
+        placeholder="Number"
         value={number}
         onChange={(e) => setNumber(e.target.value)}
       />
-
+      <input
+        placeholder="Sender"
+        value={sender}
+        onChange={(e) => setSender(e.target.value)}
+      />
+      <input
+        placeholder="Receiver"
+        value={receiver}
+        onChange={(e) => setReceiver(e.target.value)}
+      />
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value as WaybillStatus)}
+      >
+        <option value="draft">Draft</option>
+        <option value="active">Active</option>
+        <option value="closed">Closed</option>
+      </select>
       <button onClick={handleCreate}>Create</button>
       <button onClick={onClose}>Cancel</button>
     </div>
