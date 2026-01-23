@@ -1,14 +1,7 @@
 // @shared/api/mockWaybills.ts
 export type WaybillStatus = "draft" | "active" | "closed";
 
-export interface Waybill {
-  id: number;
-  number: string;
-  date: string;
-  sender: string;
-  receiver: string;
-  status: WaybillStatus;
-}
+import { Waybill } from "@entities/waybill/types/types";
 
 const API_BASE = "http://localhost:3000";
 
@@ -34,7 +27,7 @@ export const createWaybill = async (
 
 // --- Обновить накладную ---
 export const updateWaybill = async (
-  id: number,
+  id: string, // строка
   wb: Partial<Omit<Waybill, "id">>,
 ): Promise<Waybill> => {
   const res = await fetch(`${API_BASE}/waybills/${id}`, {
@@ -47,7 +40,7 @@ export const updateWaybill = async (
 };
 
 // --- Удалить накладную ---
-export const deleteWaybill = async (id: number): Promise<void> => {
+export const deleteWaybill = async (id: string): Promise<void> => {
   const res = await fetch(`${API_BASE}/waybills/${id}`, { method: "DELETE" });
   if (!res.ok && res.status !== 204)
     throw new Error("Failed to delete waybill");

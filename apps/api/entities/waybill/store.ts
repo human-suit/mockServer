@@ -1,5 +1,5 @@
-import { EntityStore } from "../../core/entityStore";
 import { Waybill } from "./model";
+import { UuidEntityStore } from "../../core/entityStore";
 import { waybillSeed } from "./seed";
 
-export const waybillStore = new EntityStore<Waybill>(waybillSeed);
+export const waybillStore = new UuidEntityStore<Waybill>(waybillSeed);

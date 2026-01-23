@@ -7,10 +7,12 @@
     "dev": "ts-node-dev --respawn --transpile-only index.ts"
   },
   "dependencies": {
+    "@fastify/cors": "^8.5.0",
     "fastify": "^4.29.1",
-    "@fastify/cors": "^8.5.0"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
